@@ -26,7 +26,7 @@
 *.VC.db
 *.VC.VC.opendb
 *.pdb
-
+*.out
 # misc files mostly used for testing
 out.txt
 ptr.txt
