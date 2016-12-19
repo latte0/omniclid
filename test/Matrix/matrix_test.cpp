@@ -15,12 +15,14 @@ TEST(MatrixTest, Matrix)
                   (Matrix_type<   decltype(Matrix<int,2>())   >)
                 );
 
-    Matrix_initializer<int,2> mi;
-    Matrix<int,1> m_i{1,2,3,4};
-    Matrix<int,3> mi2(2,2,2);
-    Matrix<int,2> m2 { {{1},{2}},{{3},{4}},{{5},{6}} };
+    Matrix<int,1> mi{1,2,3,4};
+    ASSERT_EQ(1, mi(0));
+    ASSERT_EQ(4, mi(3));
 
-    Matrix<int,1> m2_copy(m2[1]);
+    Matrix<int,3> mi2(2,2,2);
+    mi2(0,0,0) = 2;
+    ASSERT_EQ(2, mi2(0,0,0));
+    ASSERT_EQ(0, mi2(0,0,1));
 
     Matrix<int,3> m3 {  { {{1},{2}},{{3},{4}},{{5},{6}} }, { {{7},{8}},{{9},{10}},{{11},{12}} } ,  { {{11},{12}},{{13},{14}},{{15},{16}} } , { {{17},{18}},{{19},{110}},{{111},{112}} }  };
 
