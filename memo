@@ -1,0 +1,1 @@
+g++ -I/usr/local/include/ testmeta.cpp Matrix.cpp Matrix_slice.cpp -L/usr/local/lib -lgtest -lgtest_main -pthread -std=c++14

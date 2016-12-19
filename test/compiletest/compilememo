@@ -1,0 +1,1 @@
+g++-5 -I/usr/loca/include/ -I/usr/include -L/usr/lib/x86_64-linux-gnu/ -L/usr/local/lib -lgtest_main -lgtest -lpthread matrix_test.cpp --std=c++14
