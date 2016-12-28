@@ -54,19 +54,19 @@ public:
 
   template<typename U>
   Matrix(const Matrix_ref<U,N>& x) {
-    	static_assert(Convertible<U,T>(), "Matrix constructor: incompatible element types");
-      desc = x.desc;
-      elems.assign(x.begin(), x.end());
+    static_assert(Convertible<U,T>(), "Matrix constructor: incompatible element types");
+    desc = x.desc;
+    elems.assign(x.begin(), x.end());
   }
 
   template<typename U>
   Matrix& operator=(const Matrix_ref<U,N>& x)
   {
-  	static_assert(Convertible<U,T>(), "Matrix =: imcompatible element types");
+    static_assert(Convertible<U,T>(), "Matrix =: incompatible element types");
 
-  	desc = x.desc;
-  	elems.assign(x.begin(), x.end());
-  	return *this;
+    desc = x.desc;
+    elems.assign(x.begin(), x.end());
+    return *this;
   }
 
 
@@ -77,12 +77,12 @@ public:
 
   Matrix(Matrix_initializer<T,N> init){
 
-  	desc.extents = Matrix_impl::derive_extents<N>(init);
+    desc.extents = Matrix_impl::derive_extents<N>(init);
 
-  	Matrix_impl::compute_strides<N>(desc);
-  	elems.reserve(desc.size);
-  	Matrix_impl::insert_flat<N>(init, elems);
-  	assert(elems.size() == desc.size);
+    Matrix_impl::compute_strides<N>(desc);
+    elems.reserve(desc.size);
+    Matrix_impl::insert_flat<N>(init, elems);
+    assert(elems.size() == desc.size);
   }
 
   Matrix& operator=(Matrix_initializer<T,N> init)
@@ -109,16 +109,16 @@ public:
   Enable_if<Matrix_impl::Requesting_element<Args...>(), T&>
   operator()(Args... args)
   {
-  		assert(Matrix_impl::check_bounds<N>(desc, args...));
-  		return *(data() + desc(args...));
+    assert(Matrix_impl::check_bounds<N>(desc, args...));
+    return *(data() + desc(args...));
   }
 
   template<typename... Args>
   Enable_if<Matrix_impl::Requesting_element<Args...>(), const T&>
   operator()(Args... args) const
   {
-      assert(Matrix_impl::check_bounds<N>(desc, args...));
-      return *(data() + desc(args...));
+    assert(Matrix_impl::check_bounds<N>(desc, args...));
+    return *(data() + desc(args...));
   }
 
 
@@ -140,7 +140,7 @@ public:
   Matrix_ref<T,N-1> operator[](size_t i) { return row(i); }
   Matrix_ref<const T, N-1> operator[](size_t i) const { return row(i); }
 
-  const size_t rows() const {
+  size_t rows() const {
     return desc.extents[0];
   }
 
@@ -151,7 +151,7 @@ public:
   }
 
   Matrix_ref<T,N-1> row(size_t n ){
-      return Row<N>::impl(*this/*std::enable_shared_from_this<Matrix<T,N>>::shared_from_this()*/, n);
+    return Row<N>::impl(*this/*std::enable_shared_from_this<Matrix<T,N>>::shared_from_this()*/, n);
   }
 
   Matrix_ref<const T, N-1> row(size_t n) const{
@@ -206,7 +206,9 @@ public:
   Enable_if<Matrix_type<M>(), Matrix<T,N>&> apply(M& m, F f)
   {
     assert(Matrix_impl::same_extents(desc, m.descriptor()));
-    for(auto i = begin(), j = m.begin(); i!=end(); ++i, ++j)
+    auto i = begin();
+    auto j = m.begin();
+    for(; i!=end(); ++i, ++j)
       f(*i,*j);
     return *this;
   }
@@ -214,7 +216,7 @@ public:
   template<typename M>
   Enable_if<Matrix_type<M>(),Matrix<T,N>&> operator+=(const M& m)
   {
-    static_assert(m.order==N, "+=: mimatched Matrix dimensions");
+    static_assert(M::order==N, "+=: mismatched Matrix dimensions");
     assert(Matrix_impl::same_extents(desc,m.descriptor()));
 
     return apply(m, [](T& a, const Value_type<M>& b){ a+=b; });
@@ -223,7 +225,7 @@ public:
   template<typename M>
   Enable_if<Matrix_type<M>(),Matrix<T,N>&> operator-=(const M& m)
   {
-    static_assert(m.order==N, "+=: mimatched Matrix dimensions");
+    static_assert(M::order==N, "+=: mismatched Matrix dimensions");
     assert(Matrix_impl::same_extents(desc,m.descriptor()));
 
     return apply(m, [](T& a, const Value_type<M>& b){ a-=b; });
@@ -330,14 +332,14 @@ namespace {
   template<typename T>
   Matrix<T,1> operator*(const Matrix<T,2>& m, const Matrix<T,1>& v)
   {
-      assert(m.extent(1) == v.extent(0));
-      const size_t nr = m.extent(0);
-      const size_t nc = m.extent(1);
-      Matrix<T,1> res(nc);
-      for(size_t i = 0; i!= nr; ++i)
-        for(size_t j = 0; j!=nc; ++j)
-          res(i) += m(i,j)*v(j);
-      return res;
+    assert(m.extent(1) == v.extent(0));
+    const size_t nr = m.extent(0);
+    const size_t nc = m.extent(1);
+    Matrix<T,1> res(nc);
+    for(size_t i = 0; i!= nr; ++i)
+      for(size_t j = 0; j!=nc; ++j)
+        res(i) += m(i,j)*v(j);
+    return res;
   }
 
   template<typename T>
@@ -421,19 +423,19 @@ public:
 
   template<typename U>
   Matrix(const Matrix_ref<U,0>& x) {
-      static_assert(Convertible<U,T>(), "Matrix constructor: incompatible element types");
-      elem = static_cast<T>(*x.elem);
+    static_assert(Convertible<U,T>(), "Matrix constructor: incompatible element types");
+    elem = static_cast<T>(*x.elem);
   }
 
   template<typename U>
   Matrix& operator=(const Matrix_ref<U,0>& x)
   {
-    static_assert(Convertible<U,T>(), "Matrix =: imcompatible element types");
+    static_assert(Convertible<U,T>(), "Matrix =: incompatible element types");
     elem = static_cast<T>(*x.elem);
     return *this;
   }
 
-  const size_t rows() const {
+  size_t rows() const {
     return 0;
   }
 
