@@ -9,15 +9,10 @@ elseif(COMPILER_SUPPORTS_CXX0X)
 else()
         message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
-set(GTEST_ROOT /usr/local/include/gtest)
-include_directories(
-  ${GTEST_ROOT}/include
-  ../
-)
 add_executable(matrix_test matrix_test.cpp
 )
 target_link_libraries(matrix_test
-  /usr/local/lib/libgtest.a
-  /usr/local/lib/libgtest_main.a
+  gtest
+  gtest_main
   pthread
 )
