@@ -1,3 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
+set(GTEST_INCLUDE_DIR /usr/local/include/gtest/include CACHE PATH "Path to include files")
+set(GTEST_LIBRARY_DIR /usr/local/lib CACHE PATH "Path to library")
+include_directories(${GTEST_INCLUDE_DIR})
+link_directories(${GTEST_LIBRARY_DIR})
 add_subdirectory(Matrix)
 add_subdirectory(HyperComplex)
