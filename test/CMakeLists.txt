@@ -1,3 +1,20 @@
 cmake_minimum_required(VERSION 2.8)
+include(CheckCXXCompilerFlag)
+
+CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
+CHECK_CXX_COMPILER_FLAG("-std=c++1y" COMPILER_SUPPORTS_CXX1Y)
+if(COMPILER_SUPPORTS_CXX14)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+elseif(COMPILER_SUPPORTS_CXX1Y)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+else()
+  message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++14 support. Please use a different C++ compiler.")
+endif()
+
+set(GTEST_INCLUDE_DIR /usr/local/include/gtest/include CACHE PATH "Path to include files")
+set(GTEST_LIBRARY_DIR /usr/local/lib CACHE PATH "Path to library")
+
+include_directories(${GTEST_INCLUDE_DIR})
+link_directories(${GTEST_LIBRARY_DIR})
 add_subdirectory(Matrix)
 add_subdirectory(HyperComplex)
