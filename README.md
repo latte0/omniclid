@@ -17,7 +17,8 @@ The library is continuously tested with the following configurations:
 
 GCC5.0
 
-## webpage
+## HOW TO USE
+See the post.  
 https://qiita.com/latte_zero/items/2dd7bf55efd5a8d9a215
 
 ## TODO
